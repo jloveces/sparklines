@@ -482,7 +482,9 @@ class Sparklines
         i += dot_size
       end
 
-      coords.push [ i, (height - (dot_size / 2.0) - 3 - r/(101.0/(height-4-(dot_size)))) ]
+      unless r.nil?
+        coords.push [ i, (height - (dot_size / 2.0) - 3 - r/(101.0/(height-4-(dot_size)))) ]
+      end
       i += step
     end
 
@@ -512,8 +514,10 @@ class Sparklines
       @draw.stroke('black')
       # Rails.logger.debug { "coords.length = #{coords.length}" }
       coords.each_with_index do |coord, i|
-        # Rails.logger.debug { "coord = #{coord.inspect}" }
-        @draw.ellipse(coord[0], coord[1], dot_size, dot_size, 0, 360) unless @data[i] > @maximum_value
+        if (@data[i])
+          # Rails.logger.debug { "coord = #{coord.inspect}" }
+          @draw.ellipse(coord[0], coord[1], dot_size, dot_size, 0, 360) unless @data[i] > @maximum_value
+        end
       end
       @draw.stroke(line_color)
     end
